@@ -14,48 +14,38 @@ document.addEventListener("DOMContentLoaded", () => {
     const effectiveRate = 0.15808; // Finance charge effective rate
     const btcPrice = 102119.3; // Static BTC price for calculations
 
-    let lastUpdated = ""; // Tracks the last field updated ("principal" or "collateral")
+    let syncingField = null; // Tracks the field being synced ("principal" or "collateral")
 
     // Format numbers with commas and two decimal places
     function formatNumber(value) {
         return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     }
 
-    // Update all calculated results
-    function updateResults() {
+    // Parse raw numbers from formatted input values
+    function parseNumber(value) {
+        return parseFloat(value.replace(/,/g, "")) || 0; // Remove commas and convert to float
+    }
+
+    // Calculate BTC Collateral from Loan Principal
+    function calculateCollateral(principal, ltv) {
+        return principal / (btcPrice * ltv);
+    }
+
+    // Calculate Loan Principal from BTC Collateral
+    function calculatePrincipal(collateral, ltv) {
+        return collateral * btcPrice * ltv;
+    }
+
+    // Update calculated results (e.g., 30-Day Payment, Final Payment, etc.)
+    function updateResults(principal) {
         const ltv = parseFloat(ltvSlider.value) / 100;
-        const principal = parseFloat(principalInput.value) || 0;
-        const btcCollateral = parseFloat(btcCollateralInput.value) || 0;
-
-        if (lastUpdated === "principal" && principal > 0) {
-            // Calculate BTC Collateral from Loan Principal
-            const calculatedBtcCollateral = principal / (btcPrice * ltv);
-            btcCollateralInput.value = formatNumber(calculatedBtcCollateral);
-        }
-
-        if (lastUpdated === "collateral" && btcCollateral > 0) {
-            // Calculate Loan Principal from BTC Collateral
-            const calculatedPrincipal = btcCollateral * btcPrice * ltv;
-            principalInput.value = formatNumber(calculatedPrincipal);
-        }
 
         if (principal > 0) {
-            // 30-Day Payment (Interest Only)
             const thirtyDayPayment = principal * (interestRate / 365) * 30;
-
-            // Finance Charge
             const financeCharge = principal * effectiveRate;
-
-            // Final Payment
             const finalPayment = principal + financeCharge;
-
-            // Origination Fee
             const originationFee = principal * 0.02;
-
-            // Estimated Margin Call Price (150% CTP)
             const marginCallPrice = principal / ((principal / (btcPrice * ltv)) * 1.5);
-
-            // Estimated Liquidation Price (110% CTP)
             const liquidationPrice = principal / ((principal / (btcPrice * ltv)) * 1.1);
 
             // Update displayed values
@@ -68,25 +58,61 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Handle LTV slider updates
-    function updateLTVValue(value) {
-        ltvValueDisplay.textContent = value + "%";
-        updateResults();
-    }
-
-    // Event listeners for manual updates
+    // Sync BTC Collateral when Loan Principal is edited
     principalInput.addEventListener("input", () => {
-        lastUpdated = "principal"; // Mark Loan Principal as last updated
-        updateResults();
+        if (syncingField === "collateral") return; // Prevent cyclic updates
+        syncingField = "principal";
+
+        const principal = parseNumber(principalInput.value); // Parse raw value
+        const ltv = parseFloat(ltvSlider.value) / 100;
+
+        if (principal > 0) {
+            const btcCollateral = calculateCollateral(principal, ltv);
+            btcCollateralInput.value = btcCollateral.toFixed(6); // Raw numeric value for input
+        }
+
+        updateResults(principal);
+        syncingField = null; // Clear the syncing field
     });
 
+    // Sync Loan Principal when BTC Collateral is edited
     btcCollateralInput.addEventListener("input", () => {
-        lastUpdated = "collateral"; // Mark BTC Collateral as last updated
-        updateResults();
+        if (syncingField === "principal") return; // Prevent cyclic updates
+        syncingField = "collateral";
+
+        const btcCollateral = parseNumber(btcCollateralInput.value); // Parse raw value
+        const ltv = parseFloat(ltvSlider.value) / 100;
+
+        if (btcCollateral > 0) {
+            const principal = calculatePrincipal(btcCollateral, ltv);
+            principalInput.value = principal.toFixed(2); // Raw numeric value for input
+            updateResults(principal);
+        }
+
+        syncingField = null; // Clear the syncing field
     });
 
-    ltvSlider.addEventListener("input", (e) => updateLTVValue(e.target.value));
+    // Format inputs on blur (when user leaves the field)
+    principalInput.addEventListener("blur", () => {
+        const principal = parseNumber(principalInput.value);
+        principalInput.value = formatNumber(principal); // Format with commas
+    });
 
-    // Initial results update
-    updateResults();
+    btcCollateralInput.addEventListener("blur", () => {
+        const btcCollateral = parseNumber(btcCollateralInput.value);
+        btcCollateralInput.value = formatNumber(btcCollateral); // Format with commas
+    });
+
+    // Handle LTV slider updates
+    ltvSlider.addEventListener("input", (e) => {
+        ltvValueDisplay.textContent = e.target.value + "%";
+
+        const principal = parseNumber(principalInput.value) || 0;
+        if (principal > 0) {
+            updateResults(principal); // Recalculate all results with the new LTV
+        }
+    });
+
+    // Initialize results on page load
+    updateResults(parseNumber(principalInput.value) || 0);
 });
