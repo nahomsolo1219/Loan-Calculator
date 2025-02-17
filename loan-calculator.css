@@ -1,0 +1,174 @@
+/* Base Container */
+#loan-calculator-container {
+    max-width: 600px; /* Fit single-column */
+    margin: 40px auto; /* Reduced margin */
+    padding: 25px; /* Slightly reduced padding */
+    background: rgba(255,255,255,0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Force a One-Column Layout */
+  #loan-calculator-content {
+    display: flex;
+    flex-direction: column; /* Stack elements */
+    align-items: stretch;
+  }
+  .Margin-Call-Notice{
+    color: #6c757d; /* Muted text color */
+    font-size: 11px;
+  }
+  
+  /* Inputs Section */
+  #loan-calculator-inputs,
+  #interest-rate-section,
+  #loan-calculator-results,
+  #btc-price-chart-block {
+    width: 100%;
+    margin-bottom: 15px; /* Reduced bottom spacing */
+  }
+  
+  /* Labels */
+  #loan-calculator-inputs label {
+    display: block;
+    margin-bottom: 6px; /* Reduced spacing */
+    font-weight: 600;
+    color: #333;
+  }
+  
+  /* Inputs */
+  #loan-principal,
+  #btc-collateral-input {
+    width: 100%;
+    padding: 8px; /* Reduced padding */
+    margin-bottom: 12px; /* Reduced gap */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    background: #fff;
+  }
+  
+  /* BTC Price & Chart Block */
+  #btc-price-chart-block h3 {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 8px; /* Reduced gap */
+  }
+  
+  /* BTC Price - Blue & Bolder */
+  #btc-price {
+    font-size: 16px;
+    font-weight: 700;
+    color: #007BFF;
+  }
+  
+  /* BTC Chart */
+  #btc-chart-container {
+    width: 100%;
+    height: 220px; /* Slightly reduced */
+    margin-bottom: 15px;
+    padding: 8px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  #btc-chart {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+  
+  /* LTV Slider and Display */
+  #ltv-slider {
+    width: 100%;
+    margin-bottom: 8px; /* Reduced spacing */
+  }
+  #ltv-display {
+    margin-bottom: 8px;
+  }
+  #ltv-value {
+    font-weight: 600;
+  }
+  
+  /* Interest Rate Section */
+  #interest-rate-section h1 {
+    font-size: 17px;
+    color: #333;
+    margin-bottom: 12px; /* Reduced spacing */
+  }
+  
+  /* Results Section - Titles Stay Black, Numbers Turn Blue */
+  #loan-calculator-results p {
+    color: #333;
+    font-size: 13px;
+    margin-bottom: 6px; /* Reduced gap */
+  }
+  #loan-calculator-results p strong {
+    color: #333;
+  }
+  #loan-calculator-results span {
+    font-weight: 700;
+    color: #007BFF;
+  }
+  
+  /* Results Section - Updated Titles */
+  #loan-calculator-results h3 {
+    font-weight: 700; /* Bolder text */
+    color: #007BFF; /* Blue text */
+    margin-top: 5px; /* Added spacing */
+  }
+  
+  /* Get Started Button */
+  button#get-started-button {
+    display: block;
+    width: 100%;
+    padding: 10px 18px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px; /* Reduced top margin */
+  }
+  button#get-started-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Responsive Adjustments for Very Small Screens */
+  @media (max-width: 480px) {
+    #loan-calculator-container {
+      padding: 15px;
+      margin: 20px auto;
+    }
+    #loan-calculator-inputs label,
+    #interest-rate-section h1,
+    #loan-calculator-results h3,
+    #loan-calculator-results p {
+      font-size: 12px;
+    }
+    #loan-principal,
+    #btc-collateral-input {
+      font-size: 12px;
+      padding: 7px;
+    }
+    button#get-started-button {
+      font-size: 12px;
+      padding: 7px 14px;
+    }
+    #btc-price-chart-block h3 {
+      font-size: 13px;
+    }
+    #btc-chart-container {
+      height: 180px; /* Reduced height */
+    }
+  }
+  
