@@ -171,4 +171,101 @@
       height: 180px; /* Reduced height */
     }
   }
+  .modal {
+    display: none; /* Ensure it's hidden by default */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(8px);
+    background-color: rgba(0, 0, 0, 0.3);
+  }
   
+  /* When showing the modal, use flex to center it */
+  .modal.show {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+
+/* Rest of the CSS remains unchanged */
+.modal-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: left;
+  width: 500px;
+  max-width: 90%;
+  font-family: 'Poppins', sans-serif;
+  color: black;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  color: black;
+}
+
+/* Title */
+.modal-content h2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Description Paragraph */
+.modal-description {
+  font-size: 14px;
+  color: black;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+/* Input Fields */
+.modal-content input[type="text"],
+.modal-content input[type="email"] {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 10px;
+}
+
+/* Checkbox Container */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: black;
+  font-weight: normal;
+}
+
+/* Submit Button */
+button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background: #007BFF;
+  color: white;
+  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #0056b3;
+}
